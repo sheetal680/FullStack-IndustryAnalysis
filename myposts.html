@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Create Post - Industry Insights 💖</title>
+
+  <!-- Firebase (v9 compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <!-- Quill editor CSS -->
+  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
+
+  <style>
+    :root {
+      --primary-color: #ff66d6;
+      --secondary-color: #ffc3f1;
+      --bg-color: #111;
+    }
+    /* Basic Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    /* Body Styles */
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: linear-gradient(135deg, #1e0040, #4b006e, #73007f);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      color: #fff;
+      padding: 2rem;
+      min-height: 100vh;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    /* Container */
+    .container {
+      max-width: 600px;
+      margin: 4rem auto;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      backdrop-filter: blur(6px);
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+      text-align: center;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 0.8rem;
+      border: none;
+      border-radius: 4px;
+      font-size: 1rem;
+      outline: none;
+      margin-bottom: 0.5rem;
+    }
+    /* Quill editor container */
+    #editor-container {
+      height: 250px;
+      margin-bottom: 0.5rem;
+      background: #fff;
+      color: #000;
+      border-radius: 4px;
+    }
+    button {
+      background-color: var(--primary-color);
+      border: none;
+      padding: 0.8rem 1.2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 4px;
+      cursor: pointer;
+      color: #000;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: var(--secondary-color);
+    }
+    /* Message area */
+    .message {
+      text-align: center;
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: var(--secondary-color);
+    }
+    /* Back Home Button */
+    .back-home {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: var(--primary-color);
+      padding: 0.5rem 0.75rem;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      text-decoration: none;
+      color: #000;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      transition: transform 0.3s, background 0.3s;
+      z-index: 1000;
+    }
+    .back-home:hover {
+      transform: scale(1.1);
+      background: var(--secondary-color);
+    }
+  </style>
+</head>
+<body>
+  <!-- Back Home Button -->
+  <a href="index.html" class="back-home" title="Back to Home">🏠</a>
+
+  <div class="container">
+    <h1>Create a Post</h1>
+    <form id="postForm">
+      <div class="form-group">
+        <label for="postTitle">Title</label>
+        <input type="text" id="postTitle" required placeholder="Enter post title">
+      </div>
+      <div class="form-group">
+        <label for="editor-container">Content</label>
+        <!-- Quill Editor Container -->
+        <div id="editor-container"></div>
+      </div>
+      <button type="submit">Submit Post</button>
+    </form>
+    <div id="message" class="message"></div>
+  </div>
+
+  <!-- Include Quill library -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+  <script>
+    // 1. Initialize Quill editor
+    var quill = new Quill('#editor-container', {
+      theme: 'snow',
+      modules: {
+        toolbar: [
+          [{ header: [1, 2, false] }],
+          ['bold', 'italic', 'underline', 'strike'],
+          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+          ['link', 'image'],
+          ['clean']
+        ]
+      }
+    });
+
+    // 2. Initialize Firebase with your configuration
+    firebase.initializeApp({
+      apiKey: "AIzaSyB8uz9lWw0r1ci18PTQb9KU89ms16mWl54",
+      authDomain: "industry-analysis-88c1b.firebaseapp.com",
+  projectId: "industry-analysis-88c1b",
+      storageBucket: "industry-analysis-88cb1.appspot.com",
+      messagingSenderId: "39741143864",
+      appId: "1:39741143864:web:495913f890a8aabed39fcd"
+    });
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // 3. Check auth state; if not logged in, redirect to index.html
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        window.location.href = "index.html";
+      }
+    });
+
+    // 4. Handle form submission
+    const postForm = document.getElementById("postForm");
+    postForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const title = document.getElementById("postTitle").value;
+      const content = quill.root.innerHTML;
+      const user = auth.currentUser;
+
+      if (user) {
+        db.collection("posts").add({
+          title: title,
+          content: content,
+          uid: user.uid,
+          author: user.displayName || "Anonymous",
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        })
+        .then(() => {
+          document.getElementById("message").innerText = "Post created successfully!";
+          // Redirect to index.html so the new post appears in Latest Posts
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 1500);
+        })
+        .catch((error) => {
+          document.getElementById("message").innerText = "Error creating post: " + error.message;
+          console.error("Error creating post:", error);
+        });
+      }
+    });
+    postForm.addEventListener("submit", function(e) {
+  e.preventDefault();
+  console.log("Form submitted");
+  // ...
+});
+
+  </script>
+</body>
+</html>

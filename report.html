@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="description" content="Discover in-depth industry insights and reports with engaging animations and accessible design."/>
+  <title>Reports - Industry Insights 💖</title>
+  <!-- Favicon: Replace 'favicon.ico' with the correct path to your favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --primary-color: #ff66d6;
+      --secondary-color: #ffc3f1;
+      --bg-color: #111;
+    }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      margin: 0;
+      padding: 2rem;
+      line-height: 1.8;
+      background: linear-gradient(135deg, #1e0040, #4b006e, #73007f);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      color: #fff;
+      position: relative;
+      overflow-x: hidden;
+    }
+    @keyframes gradientShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+    main {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      animation: fadeIn 1s ease-out;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    h1 {
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 2rem;
+      font-size: 3rem;
+      animation: bounceIn 1s ease;
+    }
+    @keyframes bounceIn {
+      0% {
+        transform: scale(0.8);
+        opacity: 0;
+      }
+      60% {
+        transform: scale(1.1);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    h2 {
+      color: var(--primary-color);
+      margin-top: 2rem;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    p {
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+    ul {
+      list-style-type: disc;
+      margin-left: 1.5rem;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+    }
+    /* Back to Home icon styling */
+    .back-home {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: var(--primary-color);
+      color: #000;
+      padding: 0.5rem 0.7rem;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      box-shadow: 0 0 8px rgba(255, 102, 214, 0.6);
+      transition: background-color 0.3s, box-shadow 0.3s;
+      z-index: 1000;
+    }
+    .back-home:hover {
+      background-color: var(--secondary-color);
+      box-shadow: 0 0 15px rgba(255, 195, 241, 0.8);
+    }
+    /* Resource card styling */
+    .resource {
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-left: 5px solid var(--primary-color);
+      border-radius: 5px;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+    .resource:hover {
+      transform: translateX(10px);
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    /* Enhancement sections */
+    .enhancement-section {
+      margin-bottom: 2rem;
+      padding: 1rem;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-left: 5px solid var(--primary-color);
+      border-radius: 5px;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+    .enhancement-section:hover {
+      transform: translateX(10px);
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    /* Comparison Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    table th, table td {
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 0.8rem;
+      text-align: left;
+      vertical-align: top;
+    }
+    table th {
+      background-color: rgba(255, 255, 255, 0.1);
+      color: var(--secondary-color);
+    }
+    /* CTA Button */
+    .cta-btn {
+      display: inline-block;
+      background-color: var(--primary-color);
+      color: #000;
+      padding: 0.7rem 1.2rem;
+      border-radius: 4px;
+      font-weight: 600;
+      transition: background-color 0.3s, box-shadow 0.3s;
+      text-decoration: none;
+    }
+    .cta-btn:hover {
+      background-color: var(--secondary-color);
+      box-shadow: 0 0 10px rgba(255,195,241,0.7);
+    }
+    /* Floating hearts effect */
+    .floating-heart {
+      position: absolute;
+      font-size: 24px;
+      animation: floatUp 1s ease-out forwards;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    @keyframes floatUp {
+      from {
+        transform: translateY(0);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-50px);
+        opacity: 0;
+      }
+    }
+    /* Footer Styling */
+    footer {
+      text-align: center;
+      padding: 1rem 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      margin-top: 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  </style>
+</head>
+<body>
+  <!-- Back to Home Icon: Clicking this opens index.html -->
+  <a href="index.html" class="back-home" title="Back to Home" aria-label="Back to Home">🏠</a>
+
+  <main>
+    <h1>Reports 💖</h1>
+    <p>
+      Discover a collection of in-depth industry analysis reports that capture insights and spark innovation! ✨
+    </p>
+
+    <!-- Resource Cards -->
+    <div class="resource">
+      <h2>IBISWorld 📊</h2>
+      <p>
+        Extensive industry research reports covering various sectors. Explore market sizes, growth trends, 
+        competitive landscapes, and more. 💼
+      </p>
+    </div>
+
+    <div class="resource">
+      <h2>IBEF 🌏</h2>
+      <p>
+        In-depth reports on business sectors in India, featuring trends, growth opportunities, and case studies. 📈
+      </p>
+    </div>
+
+    <div class="resource">
+      <h2>MarketResearch.com 🔎</h2>
+      <p>
+        Comprehensive market research reports and industry analysis across consumer goods, technology, and more. 
+        Dive into the details! 📚
+      </p>
+    </div>
+
+    <div class="resource">
+      <h2>SlideTeam Blog 📝</h2>
+      <p>
+        For even more insights, check out the
+        <a
+          href="https://www.slideteam.net/blog/top-10-industry-analysis-reports-templates-with-samples-and-examples"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Top 10 Industry Analysis Reports Templates
+        </a>
+        with samples and examples. Perfect for enhancing your research presentations!
+      </p>
+    </div>
+
+    <!-- 1. Best Practices Section -->
+    <div class="enhancement-section">
+      <h2>Best Practices for Using These Reports 🔎</h2>
+      <ul>
+        <li><strong>Skim the Executive Summary:</strong> Get a quick overview of key findings before diving into details.</li>
+        <li><strong>Check the Methodology:</strong> Understand how data was gathered and interpreted for accurate insights.</li>
+        <li><strong>Compare Multiple Sources:</strong> Validate trends by cross-referencing data from different reports.</li>
+        <li><strong>Focus on Actionable Insights:</strong> Look for specific recommendations or trends you can apply immediately.</li>
+      </ul>
+    </div>
+
+    <!-- 2. Comparison Table -->
+    <div class="enhancement-section">
+      <h2>Resource Comparison 🆚</h2>
+      <p>Quickly see how each resource differs in coverage and focus:</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Resource</th>
+            <th>Coverage</th>
+            <th>Focus Areas</th>
+            <th>Free/Paid</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>IBISWorld</td>
+            <td>Global</td>
+            <td>Market sizes, growth, competition</td>
+            <td>Paid (some free previews)</td>
+          </tr>
+          <tr>
+            <td>IBEF</td>
+            <td>India</td>
+            <td>Sector-specific, economic trends</td>
+            <td>Free</td>
+          </tr>
+          <tr>
+            <td>MarketResearch.com</td>
+            <td>Global</td>
+            <td>Consumer goods, tech, industry analysis</td>
+            <td>Paid reports</td>
+          </tr>
+          <tr>
+            <td>SlideTeam Blog</td>
+            <td>Global</td>
+            <td>Report templates, presentation tips</td>
+            <td>Free blog content</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- 3. FAQ Section -->
+    <div class="enhancement-section">
+      <h2>Frequently Asked Questions ❓</h2>
+      <ul>
+        <li>
+          <strong>How often are these reports updated?</strong><br/>
+          IBISWorld and MarketResearch.com update their reports regularly (often annually). 
+          IBEF publishes new studies and data points every quarter, and SlideTeam adds fresh templates frequently.
+        </li>
+        <li>
+          <strong>Do I need a subscription to access these reports?</strong><br/>
+          It depends on the platform. Some offer free previews or summaries, while others 
+          require a paid subscription for full access.
+        </li>
+        <li>
+          <strong>Can I request a custom report?</strong><br/>
+          Many providers, including IBISWorld and MarketResearch.com, offer custom research 
+          services for an additional fee.
+        </li>
+      </ul>
+    </div>
+
+    <!-- 4. CTA Section -->
+    <div class="enhancement-section">
+      <h2>Still Not Sure Which Report to Choose? 🤔</h2>
+      <p>
+        Contact our team for personalized recommendations based on your industry and business goals.
+        We’ll help you find the most relevant and cost-effective resources for your needs.
+      </p>
+      <a href="index.html#contact" class="cta-btn">Get Expert Advice 💡</a>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>&copy; 2025 Industry Insights. All Rights Reserved (23761A54B8).</p>
+  </footer>
+
+  <script>
+    // Floating hearts on click with a simple removal after 1 second
+    document.addEventListener('click', function (e) {
+      const heart = document.createElement('span');
+      heart.classList.add('floating-heart');
+      heart.textContent = '💖';
+      heart.style.left = e.pageX + 'px';
+      heart.style.top = e.pageY + 'px';
+      document.body.appendChild(heart);
+      setTimeout(() => {
+        heart.remove();
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

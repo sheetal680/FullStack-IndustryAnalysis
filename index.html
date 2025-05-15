@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Industry Insights 💖</title>
+
+  <!-- Firebase (v9 compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary-color: #ff66d6;
+      --secondary-color: #ffc3f1;
+      --nav-bg: rgba(0, 0, 0, 0.8);
+      --section-bg: rgba(0, 0, 0, 0.6);
+    }
+    /* RESET */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    /* BODY with purple gradient background */
+    body {
+      font-family: 'Open Sans', sans-serif;
+      line-height: 1.6;
+      color: #fff;
+      background: linear-gradient(135deg, #1e0040, #4b006e, #73007f);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      position: relative;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+    /* Floating heart animation on click */
+    .floating-heart {
+      position: absolute;
+      font-size: 24px;
+      animation: floatUp 1s ease-out forwards;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(-50px); opacity: 0; }
+    }
+    /* HEADER & NAVIGATION */
+    header {
+      width: 100%;
+      background-color: var(--nav-bg);
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .top-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      position: relative;
+    }
+    .nav-center {
+      flex: 1;
+      text-align: center;
+    }
+    .nav-center .logo {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-color);
+      letter-spacing: 1px;
+      transition: color 0.3s, transform 0.3s;
+    }
+    .nav-center .logo:hover {
+      color: var(--secondary-color);
+      transform: scale(1.1);
+    }
+    .nav-right {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+    }
+    .nav-right ul {
+      list-style: none;
+      display: flex;
+      gap: 1rem;
+      margin-right: 1rem;
+    }
+    .nav-right ul li {
+      cursor: pointer;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+    .nav-right ul li a {
+      transition: color 0.3s, text-shadow 0.3s;
+    }
+    .nav-right ul li a:hover {
+      color: var(--secondary-color);
+      text-shadow: 0 0 8px var(--secondary-color);
+    }
+    .nav-right ul li#loginBtnLi button {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 0;
+      transition: color 0.3s;
+    }
+    .nav-right ul li#loginBtnLi button:hover {
+      color: var(--primary-color);
+    }
+    .menu-toggle {
+      display: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
+      .nav-right ul {
+        display: none;
+        flex-direction: column;
+        background-color: rgba(0,0,0,0.9);
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 200px;
+        padding: 1rem;
+      }
+      .nav-right ul.show { display: flex; }
+    }
+    /* HERO SECTION */
+    .hero {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: url('https://th.bing.com/th/id/OIP.h5WxGoNvsgwMY8j8T8H3sgHaEo?w=270&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7')
+        no-repeat center center / cover;
+      background-attachment: fixed;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8));
+      z-index: 0;
+    }
+    .hero-content {
+      position: relative;
+      max-width: 700px;
+      z-index: 1;
+      padding: 2rem;
+      animation: fadeIn 1.5s ease forwards;
+      opacity: 0;
+    }
+    @keyframes fadeIn { to { opacity: 1; } }
+    .hero h1 {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+    }
+    .hero p {
+      font-size: 1.4rem;
+      margin-bottom: 2rem;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+    }
+    .cta-btn {
+      background-color: var(--primary-color);
+      color: #000;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s, box-shadow 0.3s, transform 0.3s;
+      border-radius: 4px;
+      box-shadow: 0 0 8px rgba(255,102,214,0.6);
+      position: relative;
+      overflow: hidden;
+    }
+    .cta-btn:hover {
+      background-color: var(--secondary-color);
+      box-shadow: 0 0 15px rgba(255,195,241,0.8);
+      transform: scale(1.05);
+    }
+    .cta-btn::after {
+      content: '✨';
+      position: absolute;
+      right: -20px;
+      top: -10px;
+      font-size: 1.5rem;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .cta-btn:hover::after {
+      opacity: 1;
+      transform: translateX(-100px);
+    }
+    /* SECTIONS */
+    section {
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+    .about {
+      background-color: var(--section-bg);
+    }
+    .about h2 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+    .why-us {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .why-us h2 {
+      font-size: 2.4rem;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+    .why-us p {
+      max-width: 800px;
+      margin: 0 auto 2rem;
+      font-size: 1.2rem;
+      line-height: 1.8;
+    }
+    .benefits {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .benefit-item {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-left: 5px solid var(--primary-color);
+      border-radius: 5px;
+      padding: 1rem;
+      max-width: 280px;
+      flex: 1 1 280px;
+      transition: transform 0.3s, background-color 0.3s, box-shadow 0.3s;
+    }
+    .benefit-item:hover {
+      transform: translateX(5px);
+      background-color: rgba(255,  255, 255, 0.15);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .testimonials {
+      background-color: var(--section-bg);
+    }
+    .testimonials h2 {
+      font-size: 2.4rem;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+    }
+    .testimonial-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .testimonial {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      padding: 1.5rem;
+      max-width: 300px;
+      position: relative;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .testimonial:hover {
+      transform: scale(1.03);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+    .testimonial p {
+      font-style: italic;
+      margin-bottom: 1rem;
+    }
+    .author {
+      font-weight: 600;
+      color: var(--secondary-color);
+    }
+    .key-pages {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .key-pages h2 {
+      font-size: 2.4rem;
+      color: var(--primary-color);
+    }
+    .pages-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    .page-card {
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 5px;
+      width: 260px;
+      padding: 1rem;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+    .page-card:hover {
+      transform: translateY(-5px);
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+    .page-card h3 {
+      margin-bottom: 0.5rem;
+      color: var(--secondary-color);
+    }
+    .page-card p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .page-card a {
+      background-color: var(--primary-color);
+      color: #000;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      font-weight: 600;
+      transition: background-color 0.3s;
+      display: inline-block;
+      text-decoration: none;
+    }
+    .page-card a:hover {
+      background-color: var(--secondary-color);
+    }
+    /* REPLACEMENT SECTION: Join Our Community */
+    .community {
+      background-color: var(--section-bg);
+      text-align: center;
+    }
+    .community h2 {
+      font-size: 2.4rem;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+    .community p {
+      font-size: 1.2rem;
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      line-height: 1.8;
+    }
+    .faq {
+      background-color: rgba(0, 0, 0, 0.5);
+      text-align: left;
+    }
+    .faq h2 {
+      font-size: 2.4rem;
+      text-align: center;
+      color: var(--primary-color);
+      margin-bottom: 1rem;
+    }
+    .faq-item {
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+      padding-bottom: 1rem;
+    }
+    .faq-item h3 {
+      font-size: 1.2rem;
+      color: var(--secondary-color);
+      margin-bottom: 0.5rem;
+    }
+    .faq-item p {
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+    .contact {
+      background-color: rgba(0,0,0,0.8);
+      padding: 4rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact h2 {
+      font-size: 2.8rem;
+      margin-bottom: 1rem;
+      color: var(--primary-color);
+      text-align: center;
+    }
+    .contact p {
+      max-width: 800px;
+      margin: 0 auto 2rem;
+      line-height: 1.8;
+      font-size: 1.2rem;
+      text-align: center;
+    }
+    .contact-form-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: rgba(0, 0, 0, 0.5);
+      padding: 2rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      animation: slideUp 1s ease forwards;
+      opacity: 0;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(20px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .contact-form-container form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .contact-form-container .form-group input,
+    .contact-form-container .form-group textarea {
+      width: 100%;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      outline: none;
+      transition: box-shadow 0.3s;
+    }
+    .contact-form-container .form-group input:focus,
+    .contact-form-container .form-group textarea:focus {
+      box-shadow: 0 0 5px var(--primary-color);
+    }
+    .contact-form-container .form-group input {
+      background-color: #fff;
+      color: #000;
+    }
+    .contact-form-container .form-group textarea {
+      background-color: #fff;
+      color: #000;
+      resize: vertical;
+    }
+    .submit-btn {
+      background-color: var(--primary-color);
+      color: #000;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+    .submit-btn:hover {
+      background-color: var(--secondary-color);
+      box-shadow: 0 0 15px rgba(255,195,241,0.8);
+    }
+    footer {
+      background-color: rgba(0,0,0,0.8);
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 -2px 4px rgba(0,0,0,0.5);
+      margin-top: 2rem;
+    }
+    footer p {
+      color: var(--secondary-color);
+      font-size: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    footer a.footer-link {
+      color: var(--primary-color);
+      text-decoration: underline;
+    }
+    .back-home {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: var(--primary-color);
+      padding: 0.5rem 0.75rem;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      z-index: 1100;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      transition: transform 0.3s, background 0.3s;
+    }
+    .back-home:hover {
+      transform: scale(1.1);
+      background: var(--secondary-color);
+    }
+  </style>
+</head>
+<body>
+  <!-- Back Home Button -->
+  <a href="index.html" class="back-home" title="Back to Home">🏠</a>
+  
+  <!-- HEADER & NAVIGATION -->
+  <header>
+    <nav class="top-nav">
+      <div class="nav-center">
+        <a href="index.html" class="logo">🚀 Industry Insights </a>
+      </div>
+      <div class="nav-right">
+        <!-- Mobile Menu Toggle -->
+        <div class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu" tabindex="0">&#9776;</div>
+        <!-- Nav Links -->
+        <ul id="menu">
+          <li><a href="#home">🏠 Home</a></li>
+          <li><a href="#about">ℹ️ About</a></li>
+          <li><a href="market.htm" target="_blank">📊 Market Trends</a></li>
+          <li><a href="report.htm" target="_blank">📝 Reports</a></li>
+          <li><a href="case-studies.htm" target="_blank">💼 Case Studies</a></li>
+          <li><a href="#contact">📞 Contact</a></li>
+          <li><a href="profile.html" target="_blank">My Profile</a></li>
+          <li><a href="my-posts.html" target="_blank">My Posts</a></li>
+          <!-- Google Sign-In Button -->
+          <li id="loginBtnLi">
+            <button id="googleLogin">Sign in with Google</button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO SECTION -->
+  <div class="hero" id="home">
+    <div class="hero-content">
+      <h1>🚀 Transform Your Business with Industry Analysis 💖</h1>
+      <p>Discover trends, track competitors, and stay ahead of the market with passion!</p>
+      <a href="https://explodingtopics.com/blog/market-trend-analysis" target="_blank" class="cta-btn">Start Your Analysis 🚀</a>
+    </div>
+  </div>
+
+  <!-- ABOUT SECTION -->
+  <section class="about" id="about">
+    <h2>ℹ️ About the Blog</h2>
+    <p>
+      Welcome to <strong>Industry Insights</strong> , a platform dedicated to helping you navigate the world of business trends, market research, and competitive intelligence. Whether you're a budding entrepreneur or a seasoned professional, our resources and in-depth analyses can guide you to make informed decisions.
+    </p>
+  </section>
+
+  <!-- WHY CHOOSE US SECTION -->
+  <section class="why-us">
+    <h2>Why Choose Us?</h2>
+    <p>
+      Our mission is to provide the most comprehensive and actionable insights so you can focus on what really matters: growing your business. Here’s what sets us apart:
+    </p>
+    <div class="benefits">
+      <div class="benefit-item">
+        <h3>Data-Driven Insights</h3>
+        <p>Leverage cutting-edge analytics for the most accurate market research.</p>
+      </div>
+      <div class="benefit-item">
+        <h3>Expert Analysis</h3>
+        <p>Our team of seasoned professionals guides you with industry-leading expertise.</p>
+      </div>
+      <div class="benefit-item">
+        <h3>Real-Time Updates</h3>
+        <p>Stay on top of emerging trends and never miss an opportunity.</p>
+      </div>
+      <div class="benefit-item">
+        <h3>Global Coverage</h3>
+        <p>We analyze markets worldwide to help you expand your reach.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS SECTION -->
+  <section class="testimonials">
+    <h2>What Our Readers Say</h2>
+    <div class="testimonial-list">
+      <div class="testimonial">
+        <p>
+          "Industry Insights helped me identify key market gaps and launch my product successfully. Their reports are super detailed and easy to understand!"
+        </p>
+        <div class="author">— Alex T.</div>
+      </div>
+      <div class="testimonial">
+        <p>
+          "I love how the blog breaks down complex data into actionable steps. It’s like having my own team of analysts."
+        </p>
+        <div class="author">— Priya R.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KEY PAGES SECTION -->
+  <section class="key-pages">
+    <h2>Explore Our Key Pages</h2>
+    <p>Dig deeper into market trends, detailed reports, and success stories from leading industries.</p>
+    <div class="pages-list">
+      <div class="page-card">
+        <h3>Market Trends</h3>
+        <p>Stay updated with the latest market shifts and consumer behaviors.</p>
+        <a href="market.htm" target="_blank">Visit Market Trends</a>
+      </div>
+      <div class="page-card">
+        <h3>Reports</h3>
+        <p>Comprehensive industry analysis and insights to power your next big move.</p>
+        <a href="report.htm" target="_blank">Read Our Reports</a>
+      </div>
+      <div class="page-card">
+        <h3>Case Studies</h3>
+        <p>Learn from real-world examples of businesses transforming with data-driven strategies.</p>
+        <a href="case-studies.htm" target="_blank">Check Case Studies</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LATEST POSTS SECTION -->
+  <section id="latest-posts">
+    <h2>Latest Posts</h2>
+    <div id="postsList" class="pages-list"></div>
+  </section>
+
+  <!-- COMMUNITY SECTION (REPLACES NEWSLETTER) -->
+  <section class="community">
+    <h2>Join Our Community</h2>
+    <p>
+      Be part of a thriving network of professionals, entrepreneurs, and thought leaders. 
+      Share ideas, collaborate on projects, and grow your business together.
+    </p>
+    <!-- Link to your actual community or sign-up page -->
+    <a href="https://docs.google.com/forms/d/e/1FAIpQLSeDlAEY6ncPOF6z37BG2QG4dsigpB4Nijpjoxyt1o_3JqyYSQ/viewform?usp=dialog" class="cta-btn">Join Now</a>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section class="faq">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item">
+      <h3>1. How often do you update market trends?</h3>
+      <p>
+        We continuously monitor market data and publish updates weekly, ensuring you stay informed about the latest shifts.
+      </p>
+    </div>
+    <div class="faq-item">
+      <h3>2. Can I request a custom industry report?</h3>
+      <p>
+        Yes! Simply reach out via our contact form with details of what you need, and we’ll tailor a report to your specifications.
+      </p>
+    </div>
+  </section>
+
+  <!-- CONTACT SECTION -->
+  <section class="contact" id="contact">
+    <h2>📞 Contact Us</h2>
+    <p>We’d love to hear from you! Please fill out the form below to get in touch with us.</p>
+    <div class="contact-form-container">
+      <form id="contactForm">
+        <div class="form-group">
+          <input type="text" name="name" placeholder="Your Name 😊" required aria-label="Your Name" id="nameInput">
+        </div>
+        <div class="form-group">
+          <input type="email" name="email" placeholder="Your Email 📧" required aria-label="Your Email" id="emailInput">
+        </div>
+        <div class="form-group">
+          <input type="text" name="subject" placeholder="Subject 💬" required aria-label="Subject" id="subjectInput">
+        </div>
+        <div class="form-group">
+          <textarea name="message" rows="5" placeholder="Your Message 💌" required aria-label="Your Message" id="messageInput"></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Send Message </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p &copy; 2025 Industry Insights. All Rights Reserved (23761A54B8).</p>
+    <p>
+      <a href="#" class="footer-link">Privacy Policy</a> |
+      <a href="#" class="footer-link">Terms of Service</a>
+    </p>
+  </footer>
+
+  <!-- Main JavaScript -->
+  <script>
+    // Warn if running over file://
+    if (window.location.protocol === "file:") {
+      alert("Warning: You are running this file via file://. Google Sign-In will NOT work.\n\nPlease serve it from http://localhost or https:// domain.");
+      console.error("Cannot run Google Sign-In over file:// protocol.");
+    } else {
+      console.log("Page served from: " + window.location.href);
+    }
+
+    // Mobile Menu Toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const menu = document.getElementById('menu');
+    menuToggle.addEventListener('click', () => {
+      menu.classList.toggle('show');
+    });
+    menuToggle.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        menu.classList.toggle('show');
+      }
+    });
+
+    // ========================
+    // 1. Initialize Firebase
+    // ========================
+    firebase.initializeApp({
+      apiKey: "AIzaSyB8uz9lWw0r1ci18PTQb9KU89ms16mWl54",
+      authDomain: "industry-analysis-88c1b.firebaseapp.com",
+      projectId: "industry-analysis-88c1b",
+      storageBucket: "industry-analysis-88cb1.appspot.com",
+      messagingSenderId: "39741143864",
+      appId: "1:39741143864:web:495913f890a8aabed39fcd"
+    });
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // DOM Elements for Sign-In UI
+    const loginBtnLi = document.getElementById("loginBtnLi");
+
+    function updateNavUI(user) {
+      if (user) {
+        loginBtnLi.innerHTML = `<button id="logoutBtn" style="background: none; border: none; color: var(--primary-color); font-size: 1rem; font-weight: 600; cursor: pointer;">Logout (${user.displayName})</button>`;
+        document.getElementById("logoutBtn").addEventListener("click", () => {
+          auth.signOut()
+            .then(() => { updateNavUI(null); })
+            .catch((error) => { console.error("Logout Failed:", error); });
+        });
+      } else {
+        loginBtnLi.innerHTML = `<button id="googleLogin" style="background: none; border: none; color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer;">Sign in with Google</button>`;
+        document.getElementById("googleLogin").addEventListener("click", signInHandler);
+      }
+    }
+
+    function signInHandler() {
+      console.log("Sign in with Google button clicked!");
+      alert("Attempting Google Sign-In...");
+      const provider = new firebase.auth.GoogleAuthProvider();
+      auth.signInWithPopup(provider)
+        .then((result) => {
+          const user = result.user;
+          console.log("Sign-In success:", user);
+          updateNavUI(user);
+        })
+        .catch((error) => {
+          console.error("Login Failed:", error);
+          alert("Login failed. Check console for details.");
+        });
+    }
+
+    auth.onAuthStateChanged((user) => { updateNavUI(user); });
+
+    // ===========================================
+    // 2. Real-time listener for "posts" collection
+    // ===========================================
+    function loadPosts() {
+      const postsList = document.getElementById("postsList");
+      db.collection("posts")
+        .orderBy("createdAt", "desc")
+        .onSnapshot((querySnapshot) => {
+          postsList.innerHTML = "";
+          querySnapshot.forEach((doc) => {
+            const post = doc.data();
+            const postEl = document.createElement("div");
+            postEl.classList.add("page-card");
+            postEl.innerHTML = `
+              <h3>${post.title}</h3>
+              <p>${post.content}</p>
+              <small>
+                Posted by ${post.author || "Anonymous"} 
+                on ${post.createdAt ? post.createdAt.toDate().toLocaleString() : 'just now'}
+              </small>
+            `;
+            postsList.appendChild(postEl);
+          });
+        }, (error) => {
+          console.error("Error loading posts:", error);
+          postsList.innerText = "Error loading posts.";
+        });
+    }
+    document.addEventListener("DOMContentLoaded", loadPosts);
+
+    // =======================================
+    // 3. Handle "Contact Us" form submission
+    // =======================================
+    const contactForm = document.getElementById("contactForm");
+    contactForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById("nameInput").value;
+      const email = document.getElementById("emailInput").value;
+      const subject = document.getElementById("subjectInput").value;
+      const message = document.getElementById("messageInput").value;
+
+      // Store in Firestore
+      db.collection("contactMessages").add({
+        name: name,
+        email: email,
+        subject: subject,
+        message: message,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      })
+      .then(() => { console.log("Message stored in Firestore"); })
+      .catch((err) => { console.error("Error storing message in Firestore:", err); });
+
+      // Send submission via Formspree (replace with your actual endpoint)
+      fetch("https://formspree.io/f/mrbpbzko", {
+        method: "POST",
+        headers: {
+          "Accept": "application/json",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ name, email, subject, message })
+      })
+      .then((response) => {
+        if (response.ok) {
+          console.log("Formspree submission successful");
+        } else {
+          console.error("Formspree submission error:", response.statusText);
+        }
+      })
+      .catch((error) => { console.error("Formspree error:", error); });
+
+      alert("Your message has been sent!");
+      contactForm.reset();
+    });
+  </script>
+
+  <!-- Additional Script for Testimonials and Mobile Menu -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const testimonialCards = document.querySelectorAll(".testimonial");
+      testimonialCards.forEach((card) => {
+        card.addEventListener("mouseover", function () {
+          card.style.transform = "scale(1.05)";
+          card.style.boxShadow = "0 10px 20px rgba(255, 102, 214, 0.5)";
+        });
+        card.addEventListener("mouseleave", function () {
+          card.style.transform = "scale(1)";
+          card.style.boxShadow = "0 5px 15px rgba(0,0,0,0.3)";
+        });
+      });
+
+      document.addEventListener("click", function (event) {
+        const heart = document.createElement("span");
+        heart.innerHTML = "🚀";
+        heart.classList.add("floating-heart");
+        document.body.appendChild(heart);
+        heart.style.left = `${event.clientX}px`;
+        heart.style.top = `${event.clientY}px`;
+        setTimeout(() => { heart.remove(); }, 1000);
+      });
+
+      const menuToggle = document.getElementById("menu-toggle");
+      const menu = document.getElementById("menu");
+      menuToggle.addEventListener("click", function () { menu.classList.toggle("show"); });
+    });
+  </script>
+</body>
+</html>

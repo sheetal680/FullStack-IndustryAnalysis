@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Explore in-depth case studies showcasing innovative strategies that transform businesses. Discover real-world examples and valuable lessons in industry insights.">
+  <title>Case Studies - Industry Insights 💼</title>
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <!-- Favicon (optional: update the path as needed) -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <style>
+    :root {
+      --primary-color: #ff66d6;
+      --secondary-color: #ffc3f1;
+    }
+    body {
+      font-family: 'Open Sans', sans-serif;
+      line-height: 1.6;
+      color: #fff;
+      background: linear-gradient(135deg, #1e0040, #4b006e, #73007f);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
+      margin: 0;
+      padding: 2rem;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .back-home {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: var(--primary-color);
+      color: #000;
+      padding: 0.5rem 0.7rem;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      box-shadow: 0 0 8px rgba(255,102,214,0.6);
+      transition: background-color 0.3s, box-shadow 0.3s;
+      z-index: 1000;
+    }
+    .back-home:hover {
+      background-color: var(--secondary-color);
+      box-shadow: 0 0 15px rgba(255,195,241,0.8);
+    }
+    main.container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 2rem;
+      background: rgba(0,0,0,0.5);
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      animation: fadeIn 1s ease-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1 {
+      text-align: center;
+      color: var(--primary-color);
+      font-size: 3rem;
+      margin-bottom: 2rem;
+      animation: bounceIn 1s ease;
+    }
+    @keyframes bounceIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      60% { transform: scale(1.1); opacity: 1; }
+      100% { transform: scale(1); }
+    }
+    h2 {
+      color: var(--primary-color);
+      font-size: 2rem;
+      margin: 1.5rem 0 1rem;
+    }
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      line-height: 1.8;
+    }
+    /* Filter Section */
+    .filter-section {
+      margin-bottom: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1rem;
+    }
+    .filter-section label {
+      font-weight: 600;
+    }
+    .filter-section select {
+      background-color: #fff;
+      color: #000;
+      border: none;
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+    /* Case Study Card */
+    .case-study {
+      background-color: rgba(255,255,255,0.1);
+      border-left: 5px solid var(--primary-color);
+      border-radius: 5px;
+      padding: 1rem 1.5rem;
+      margin-bottom: 2rem;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+    .case-study:hover {
+      transform: translateX(10px);
+      background-color: rgba(255,255,255,0.15);
+    }
+    /* Key Takeaways */
+    .takeaways {
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 4px;
+      margin-top: 1rem;
+      padding: 0.8rem;
+      font-size: 0.95rem;
+    }
+    .takeaways h3 {
+      color: var(--secondary-color);
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    /* Industry Relevance */
+    .industry-relevance {
+      font-style: italic;
+      margin-top: 0.5rem;
+      font-size: 0.95rem;
+      color: #ffc3f1;
+    }
+    /* Testimonials */
+    blockquote {
+      background-color: rgba(255,255,255,0.1);
+      border-left: 5px solid var(--secondary-color);
+      margin: 1rem 0;
+      padding: 0.8rem;
+      font-style: italic;
+      position: relative;
+    }
+    blockquote::before {
+      content: "“";
+      font-size: 2rem;
+      color: var(--secondary-color);
+      position: absolute;
+      top: -10px;
+      left: -10px;
+    }
+    /* Share Buttons */
+    .share-buttons {
+      margin-top: 1rem;
+    }
+    .share-buttons a {
+      display: inline-block;
+      margin-right: 1rem;
+      background-color: #fff;
+      color: #000;
+      padding: 0.3rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background-color 0.3s;
+    }
+    .share-buttons a:hover {
+      background-color: var(--secondary-color);
+      color: #000;
+    }
+    /* References */
+    .references {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+    .references h3 {
+      color: var(--secondary-color);
+      margin-bottom: 0.5rem;
+    }
+    .references ol {
+      margin-left: 1.5rem;
+    }
+    /* CTA Section */
+    .cta-section {
+      background-color: rgba(255,255,255,0.1);
+      border-left: 5px solid var(--primary-color);
+      border-radius: 5px;
+      padding: 1rem 1.5rem;
+      margin: 2rem 0;
+      text-align: center;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+    .cta-section:hover {
+      transform: translateX(10px);
+      background-color: rgba(255,255,255,0.15);
+    }
+    .cta-section a {
+      display: inline-block;
+      margin-top: 1rem;
+      background-color: var(--primary-color);
+      color: #000;
+      padding: 0.7rem 1.2rem;
+      border-radius: 4px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: background-color 0.3s, box-shadow 0.3s;
+    }
+    .cta-section a:hover {
+      background-color: var(--secondary-color);
+      box-shadow: 0 0 10px rgba(255,195,241,0.7);
+    }
+    /* More Like This */
+    .related-content {
+      margin-top: 2rem;
+      background-color: rgba(255,255,255,0.1);
+      border-left: 5px solid var(--primary-color);
+      border-radius: 5px;
+      padding: 1rem 1.5rem;
+      transition: transform 0.3s, background-color 0.3s;
+    }
+    .related-content:hover {
+      transform: translateX(10px);
+      background-color: rgba(255,255,255,0.15);
+    }
+    .related-content ul {
+      list-style: disc;
+      margin-left: 1.5rem;
+    }
+    footer {
+      background-color: rgba(0,0,0,0.8);
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 -2px 4px rgba(0,0,0,0.5);
+      margin-top: 2rem;
+    }
+    footer p {
+      color: var(--secondary-color);
+      font-size: 1rem;
+    }
+    /* Floating hearts effect */
+    .floating-heart {
+      position: absolute;
+      font-size: 24px;
+      animation: floatUp 1s ease-out forwards;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    @keyframes floatUp {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(-50px); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Back to Home Icon with aria-label for accessibility -->
+  <a href="index.html" class="back-home" title="Back to Home" aria-label="Back to Home">🏠</a>
+  
+  <main class="container">
+    <h1>Case Studies 💼</h1>
+    <p>
+      Explore our in-depth case studies that highlight how innovative strategies transform businesses.
+      Discover real-world examples of success and learn valuable lessons. ✨
+    </p>
+
+    <!-- Filter by Industry (placeholder) -->
+    <div class="filter-section">
+      <label for="industry-filter">Filter by Industry:</label>
+      <select id="industry-filter" name="industry-filter" aria-label="Filter case studies by industry">
+        <option value="all">All Industries</option>
+        <option value="retail">Retail</option>
+        <option value="finance">Finance</option>
+        <option value="manufacturing">Manufacturing</option>
+        <option value="automotive">Automotive</option>
+        <!-- Add more as needed -->
+      </select>
+      <!-- Placeholder note: Implement JS logic if you want actual filtering -->
+    </div>
+    
+    <!-- Example Case Study 1 -->
+    <article class="case-study">
+      <h2>Revolutionizing Retail 🚀</h2>
+      <p>
+        Discover how a leading retailer transformed its supply chain using advanced analytics and AI to boost 
+        efficiency and customer satisfaction.
+      </p>
+      <!-- Industry Relevance -->
+      <p class="industry-relevance">Relevant Industries: Retail, E-commerce</p>
+      <!-- Key Takeaways -->
+      <div class="takeaways">
+        <h3>Key Takeaways</h3>
+        <ul>
+          <li>Supply chain costs reduced by 15%</li>
+          <li>Improved forecasting accuracy by leveraging AI</li>
+          <li>Enhanced customer satisfaction scores</li>
+        </ul>
+      </div>
+      <!-- Share Buttons -->
+      <div class="share-buttons">
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=YOUR_PAGE_URL" target="_blank" rel="noopener" aria-label="Share on LinkedIn">Share on LinkedIn</a>
+      </div>
+    </article>
+    
+    <!-- Example Case Study 2 -->
+    <article class="case-study">
+      <h2>Digital Transformation in Finance 💡</h2>
+      <p>
+        Learn how a major bank embraced digital innovation to enhance its services, streamline operations, and 
+        improve customer engagement.
+      </p>
+      <p class="industry-relevance">Relevant Industries: Finance, Banking</p>
+      <div class="takeaways">
+        <h3>Key Takeaways</h3>
+        <ul>
+          <li>Reduced operational costs by 20%</li>
+          <li>Improved online banking adoption rate</li>
+          <li>Customer satisfaction rose by 25%</li>
+        </ul>
+      </div>
+      <div class="share-buttons">
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=YOUR_PAGE_URL" target="_blank" rel="noopener" aria-label="Share on LinkedIn">Share on LinkedIn</a>
+      </div>
+    </article>
+    
+    <!-- Example Case Study 3 -->
+    <article class="case-study">
+      <h2>Sustainable Manufacturing 🌱</h2>
+      <p>
+        Read about how an industrial company implemented green technologies and sustainable practices, 
+        reducing its carbon footprint while driving growth.
+      </p>
+      <p class="industry-relevance">Relevant Industries: Manufacturing, Green Energy</p>
+      <div class="takeaways">
+        <h3>Key Takeaways</h3>
+        <ul>
+          <li>Carbon emissions reduced by 30%</li>
+          <li>Long-term savings through energy-efficient equipment</li>
+          <li>Positive brand image for eco-conscious consumers</li>
+        </ul>
+      </div>
+      <div class="share-buttons">
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=YOUR_PAGE_URL" target="_blank" rel="noopener" aria-label="Share on LinkedIn">Share on LinkedIn</a>
+      </div>
+    </article>
+
+    <!-- New Case Study: Hexagon -->
+    <article class="case-study">
+      <h2>Hexagon 🏭</h2>
+      <p>
+        Explore the effectiveness of industrial data analysis through two case studies. One focuses on a large-scale, 
+        multi-plant data analytics initiative, while the other examines a localized process control data analytics project. 
+        Learn how data analytics can bridge the skills gap in the industrial landscape.
+      </p>
+      <p class="industry-relevance">Relevant Industries: Manufacturing, Industrial Analytics</p>
+      <div class="takeaways">
+        <h3>Key Takeaways</h3>
+        <ul>
+          <li>Data-driven approach improved plant efficiency by 18%</li>
+          <li>Local process control reduced downtime significantly</li>
+          <li>Upskilling workforce led to a more adaptive environment</li>
+        </ul>
+      </div>
+      <div class="share-buttons">
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=YOUR_PAGE_URL" target="_blank" rel="noopener" aria-label="Share on LinkedIn">Share on LinkedIn</a>
+      </div>
+    </article>
+
+    <!-- New Case Study: IJERM -->
+    <article class="case-study">
+      <h2>International Journal of Engineering Research And Management (IJERM) 🔬</h2>
+      <p>
+        This case study delves into industrial time series analysis methods and simulation experiment design, specifically 
+        focusing on energy consumption data. The study uses the Seasonal Auto-regressive Integrated Moving Average Model 
+        (SARIMA) to forecast energy consumption.
+      </p>
+      <p class="industry-relevance">Relevant Industries: Energy, Engineering</p>
+      <div class="takeaways">
+        <h3>Key Takeaways</h3>
+        <ul>
+          <li>SARIMA model improved forecasting accuracy by 25%</li>
+          <li>Simulation approach reduced guesswork in energy planning</li>
+          <li>Better resource allocation for peak demand times</li>
+        </ul>
+      </div>
+      <!-- Example Testimonial/Quote -->
+      <blockquote>
+        "Using advanced time series analysis has revolutionized how we manage our energy resources, saving us both time and money."
+      </blockquote>
+      <p>— Dr. Jane Doe, Senior Researcher at IJERM</p>
+      <div class="share-buttons">
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=YOUR_PAGE_URL" target="_blank" rel="noopener" aria-label="Share on LinkedIn">Share on LinkedIn</a>
+      </div>
+      <!-- Example References for This Case Study -->
+      <div class="references">
+        <h3>References</h3>
+        <ol>
+          <li><a href="https://example.com/ijerm-study" target="_blank" rel="noopener">Full IJERM Study</a></li>
+          <li><a href="https://example.com/sarima-details" target="_blank" rel="noopener">SARIMA Model Basics</a></li>
+        </ol>
+      </div>
+    </article>
+
+    <!-- New Case Study: SDMIMD -->
+    <article class="case-study">
+      <h2>SDMIMD 🏭</h2>
+      <p>
+        A case study on labor unrest at the Manesar Plant of Maruti Suzuki in 2012. This study provides a perspective on 
+        industrial relations, the social milieu of the area, and the triggers for the criminal acts that took place. 
+        It also highlights the future implications of these incidents on industrial relations and business scenarios in India.
+      </p>
+      <p class="industry-relevance">Relevant Industries: Automotive, Labor Relations</p>
+      <div class="takeaways">
+        <h3>Key Takeaways</h3>
+        <ul>
+          <li>Importance of proactive employee engagement</li>
+          <li>Long-term impact of social factors on labor relations</li>
+          <li>Policy changes needed to prevent future unrest</li>
+        </ul>
+      </div>
+      <div class="share-buttons">
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=YOUR_PAGE_URL" target="_blank" rel="noopener" aria-label="Share on LinkedIn">Share on LinkedIn</a>
+      </div>
+    </article>
+    
+    <!-- CTA Section -->
+    <section class="cta-section">
+      <h2>Ready to Transform Your Business? 🚀</h2>
+      <p>Contact us for a custom solution tailored to your industry and unique challenges.</p>
+      <a href="index.html#contact" aria-label="Get in Touch">Get in Touch 💡</a>
+    </section>
+
+    <!-- More Like This / Related Content -->
+    <section class="related-content">
+      <h2>You Might Also Like</h2>
+      <ul>
+        <li><a href="report.htm" target="_blank" rel="noopener">Explore Our Latest Industry Reports</a></li>
+        <li><a href="market.htm" target="_blank" rel="noopener">Stay Updated with Market Trends</a></li>
+        <li><a href="blog.htm" target="_blank" rel="noopener">Read More Insights on Our Blog</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Industry Insights. All Rights Reserved (23761A54B8).</p>
+  </footer>
+  
+  <!-- Floating hearts on click effect -->
+  <script>
+    document.addEventListener('click', function(e) {
+      const heart = document.createElement('span');
+      heart.classList.add('floating-heart');
+      heart.textContent = '💖';
+      heart.style.left = e.pageX + 'px';
+      heart.style.top = e.pageY + 'px';
+      document.body.appendChild(heart);
+      setTimeout(() => {
+        heart.remove();
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

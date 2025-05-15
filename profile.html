@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Profile (Inline Editing)</title>
+  <!-- Google Font -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap">
+  <!-- Firebase (v9 compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <style>
+    /* GOOGLE FONT (optional, but recommended for a nicer look) */
+    @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap');
+
+    /* Basic reset & body styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      /* Use a purple gradient background similar to your design */
+      background: linear-gradient(135deg, #31024c, #4c0573, #6d1a97);
+      background-size: 300% 300%;
+      animation: gradientShift 15s ease infinite;
+      color: #fff;
+      font-family: 'Open Sans', Arial, sans-serif;
+      padding: 2rem;
+      min-height: 100vh;
+      position: relative;
+    }
+    @keyframes gradientShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Home icon style */
+    .back-home {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: #ff66d6;
+      padding: 0.5rem 0.75rem;
+      border-radius: 50%;
+      font-size: 1.5rem;
+      text-decoration: none;
+      color: #000;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+      transition: transform 0.3s, background 0.3s;
+      z-index: 1000;
+    }
+    .back-home:hover {
+      transform: scale(1.1);
+      background: #ffc3f1;
+      color: #000;
+    }
+
+    /* Container */
+    .profile-container {
+      max-width: 600px;
+      margin: 4rem auto 0 auto;
+    }
+
+    /* Profile Panel */
+    .profile-panel {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      position: relative;
+      backdrop-filter: blur(6px);
+    }
+
+    /* Section heading */
+    .profile-panel h2 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #ff66d6;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+
+    /* "Member since" text */
+    .member-since {
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      color: #ffc3f1;
+    }
+
+    /* Each row of info */
+    .info-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      color: #fff;
+    }
+    .info-item strong {
+      margin-right: 1rem;
+      color: #ffc3f1;
+      font-weight: 600;
+    }
+
+    /* Editable text */
+    .info-value {
+      color: #fff;
+      font-style: italic;
+      cursor: pointer;
+      min-width: 80px;
+      text-shadow: 0 0 4px rgba(0,0,0,0.3);
+    }
+    .info-value:hover {
+      text-shadow: 0 0 6px #ff66d6;
+    }
+
+    /* Input for editing */
+    .info-value input {
+      font-style: normal;
+      color: #000;
+      font-size: 1rem;
+      width: 180px;
+      border: none;
+      border-radius: 4px;
+      padding: 0.3rem 0.5rem;
+      outline: none;
+    }
+    .info-value input:focus {
+      box-shadow: 0 0 6px #ff66d6;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Home icon to go back to main page -->
+  <a href="index.html" class="back-home" title="Back to Home">🏠</a>
+
+  <div class="profile-container">
+    <!-- Profile Panel -->
+    <div class="profile-panel">
+      <h2>About Me</h2>
+      <div class="member-since">Member since March 2025</div>
+
+      <!-- Each .info-value has a data-field for saving the value -->
+      <div class="info-item">
+        <strong>I live in</strong>
+        <span class="info-value editable" data-field="location" title="Click to edit">your Location</span>
+      </div>
+      <div class="info-item">
+        <strong>Name</strong>
+        <span class="info-value editable" data-field="name" title="Click to edit">your name</span>
+      </div>
+      <div class="info-item">
+        <strong>Your Gmail account</strong>
+        <span class="info-value editable" data-field="gmail" title="Click to edit">example@gmail.com</span>
+      </div>
+      <div class="info-item">
+        <strong>Date of Birth</strong>
+        <span class="info-value editable" data-field="birthDate" title="Click to edit">01/01/2000</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // 1. Inline Editing Logic (remains unchanged)
+    function loadProfileData() {
+      document.querySelectorAll('.editable').forEach(span => {
+        const key = span.dataset.field;
+        if (key) {
+          const savedValue = localStorage.getItem(key);
+          if (savedValue !== null) {
+            span.textContent = savedValue;
+          }
+        }
+      });
+    }
+
+    document.querySelectorAll('.editable').forEach(span => {
+      span.addEventListener('click', function() {
+        if (this.getAttribute('data-editing') === 'true') return;
+        this.setAttribute('data-editing', 'true');
+        const originalText = this.textContent.trim();
+        this.innerHTML = '';
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = originalText;
+        input.setAttribute('aria-label', 'Editing ' + this.dataset.field);
+        this.appendChild(input);
+        input.focus();
+
+        const finishEditing = () => {
+          const newText = input.value.trim();
+          const key = this.dataset.field;
+          if (newText === '') {
+            this.textContent = originalText;
+            if (key) localStorage.removeItem(key);
+          } else {
+            this.textContent = newText;
+            if (key) localStorage.setItem(key, newText);
+          }
+          this.removeAttribute('data-editing');
+        };
+
+        input.addEventListener('blur', finishEditing);
+        input.addEventListener('keydown', e => {
+          if (e.key === 'Enter') {
+            input.blur();
+          } else if (e.key === 'Escape') {
+            this.textContent = originalText;
+            this.removeAttribute('data-editing');
+          }
+        });
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', loadProfileData);
+
+    // 2. Firebase Configuration & Auth State Listener
+    firebase.initializeApp({
+      apiKey: "AIzaSyB8uz9lWw0r1ci18PTQb9KU89ms16mWl54",
+      authDomain: "industry-analysis-88c1b.firebaseapp.com",
+      projectId: "industry-analysis-88cb1",
+      storageBucket: "industry-analysis-88cb1.appspot.com",
+      messagingSenderId: "39741143864",
+      appId: "1:39741143864:web:495913f890a8aabed39fcd"
+    });
+
+    firebase.auth().onAuthStateChanged(function(user) {
+      if (user) {
+        // Auto-populate profile fields from Firebase Auth
+        const nameSpan = document.querySelector('.editable[data-field="name"]');
+        const gmailSpan = document.querySelector('.editable[data-field="gmail"]');
+        if (nameSpan && user.displayName) {
+          nameSpan.textContent = user.displayName;
+          localStorage.setItem('name', user.displayName);
+        }
+        if (gmailSpan && user.email) {
+          gmailSpan.textContent = user.email;
+          localStorage.setItem('gmail', user.email);
+        }
+        // Optionally, you can update other fields if available.
+      }
+      // If user is not signed in, you might want to redirect to login.
+      // else {
+      //   window.location.href = "index.html";
+      // }
+    });
+  </script>
+
+</body>
+</html>
